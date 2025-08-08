@@ -69,7 +69,7 @@ I wrote the code generally systematically:
 - I adapted them to GRB analysis from the Transformer encoder.py script written by Dr. Sravan.
 - I then began the process of training, testing clustering, and adding complexity to the architecture
   such as attention and bidirectionality.
-- I am now in the process of sweeping and adding more complexity.
+- I am now in the process of adding mor complexity.
 
 Model Components:
 - Attention:
@@ -85,12 +85,11 @@ Model Components:
 
 Notes:
 - There is no intermediate network.
-- Dropout has yet to be tuned.
 - Could use a more complex decoder.
 - Could use a more robust attention mechanism.
 - Could use a more explicit regularization method than dropout alone.
 - I have not tried a Time-Aware LSTM yet (will require a new preprocessing script).
-- 
+- Could highly benefit from a channel embedding if we want to distinguish short and long bursts.
 '''
 
 # Bidirectional LSTM Autoencoder Model w/ attention
@@ -212,4 +211,5 @@ with torch.no_grad():
 
 latent_feats = np.concatenate(latent_feats, axis=0)
 np.save("latent_feats.npy", latent_feats)
+
 np.save("burst_list.npy", np.array(burst_ids))
