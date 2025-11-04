@@ -21,7 +21,7 @@ latent_feats_2d = tsne.fit_transform(latent_feats)
 iso_forest = IsolationForest()
 outlier_labels = iso_forest.fit_predict(latent_feats)
 
-# --- Combining Cluster and Outlier Labels ---
+# Combining Cluster and Outlier Labels:
 # Create a DataFrame with the cluster assignments.
 df = pd.DataFrame({
     'burst_id': burst_list.astype(int),
@@ -34,6 +34,8 @@ df['cluster_label'] = np.where(outlier_labels == -1, -1, df['cluster_label'])
 # --- Save to CSV ---
 df.to_csv('cluster_labels.csv', index=False)
 
+# This section is the historic t-SNE plotting.
+# We found it to be more salient to use PCA, however I figured t-SNE could still be of use.
 '''
 # Visualize clusters and outliers
 plt.figure(figsize=(10, 8))
@@ -56,18 +58,8 @@ outlier_burst_ids = burst_list[outlier_labels == -1]
 outliers_df = pd.DataFrame({'burst_id': outlier_burst_ids.astype(int)})
 outliers_df.to_csv('outlier_burst_ids.csv', index=False)
 
-'''
-for burst_id in outlier_burst_ids:
-        print(f"{burst_id:.0f}")
 
-# Print burst IDs of clusters
-for cluster in range(1,2):
-    cluster_burst_ids = burst_list[cluster_assignments == cluster]
-    print(f"Burst IDs of Cluster {cluster}:")
-    for burst_id in cluster_burst_ids:
-        print(f"{burst_id:.0f}")        
-'''
-
+# Construct and project the PCA (alternative to t-SNE)
 pca = PCA(n_components=2)
 latent_feats_pca = pca.fit_transform(latent_feats)
 
@@ -83,3 +75,4 @@ plt.legend()
 
 plt.tight_layout()
 plt.show()
+plt.savefig('PCA.png')
