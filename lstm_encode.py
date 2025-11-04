@@ -87,9 +87,16 @@ Notes:
 - There is no intermediate network.
 - Could use a more complex decoder.
 - Could use a more robust attention mechanism.
-- Could use a more explicit regularization method than dropout alone.
-- I have not tried a Time-Aware LSTM yet (will require a new preprocessing script).
-- Could highly benefit from a channel embedding if we want to distinguish short and long bursts.
+- Could use a more explicit regularization method rather than solely dropout.
+- I have not tried a Time-Aware LSTM yet (would essentially require starting from the ground up from preprocessing to model).
+- Could highly benefit from a channel embedding if we have a full, raw dataset.
+- LSTM autoencoders train by reconstructing the light curves. Exploring other loss functions, training methods, or models would be responsible. 
+
+Recommended Next Steps:
+1. Fetch full dataset (VERY IMPORTANT).
+2. Attempt channel embedding on LSTM, sweep if looks promising.
+3. Attempt a CNN or another architecture.
+4. Attempt some sort of denoising on the full data to see if anything helps.
 '''
 
 # Bidirectional LSTM Autoencoder Model w/ attention
@@ -213,3 +220,4 @@ latent_feats = np.concatenate(latent_feats, axis=0)
 np.save("latent_feats.npy", latent_feats)
 
 np.save("burst_list.npy", np.array(burst_ids))
+
